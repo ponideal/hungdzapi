@@ -47,15 +47,23 @@ def main():
     if not keys:
         return
 
-    # Делаем запросы и собираем результаты
-    results = {}
-    for key in keys:
-        logging.info(f"Making API request for key: {key}")
-        result = make_api_request(key)
-        results[key] = result
+    # Открываем файл для записи результатов
+    with open('results.txt', 'w', encoding='utf-8') as f:
+        for key in keys:
+            logging.info(f"Making API request for key: {key}")
+            response = make_api_request(key)
+            
+            try:
+                # Парсим JSON ответ
+                response_data = json.loads(response)
+                # Записываем email:password
+                if '|' in str(response_data):
+                    email, password = response_data.split('|')
+                    f.write(f"{email}:{password}\n")
+            except:
+                continue
 
-        # Добавляем небольшую задержку между запросами
-        time.sleep(0.1)
+            time.sleep(0.1)
 
 
 if __name__ == "__main__":
