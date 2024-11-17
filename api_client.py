@@ -15,7 +15,7 @@ def make_api_request(key):
         print(f"\nDEBUG Response for key {key}:")
         print(f"Status Code: {response.status_code}")
         print(f"Headers: {dict(response.headers)}")
-        print(f"Content: {response.text[:200]}...") # показываем первые 200 символов ответа
+        print(f"Content: {response.text}")  # Show full response content
         return response.text
     except Exception as e:
         error_msg = f"Error for key {key}: {str(e)}"
@@ -29,13 +29,9 @@ def read_keys_from_file(filename):
             keys = []
             for line in f:
                 line = line.strip()
-                if line:
-                    # Extract just the key value if it contains "Key:"
-                    if "Key:" in line:
-                        key = line.split("Key:")[1].strip()
-                        keys.append(key)
-                    else:
-                        keys.append(line)
+                if line and "Key:" in line:
+                    key = line.split("Key:")[1].strip()
+                    keys.append(key)
         logging.info(f"Read {len(keys)} keys from {filename}")
         return keys
     except Exception as e:
