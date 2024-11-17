@@ -26,7 +26,16 @@ def read_keys_from_file(filename):
     """Читаем ключи из файла"""
     try:
         with open(filename, 'r') as f:
-            keys = [line.strip() for line in f if line.strip()]
+            keys = []
+            for line in f:
+                line = line.strip()
+                if line:
+                    # Extract just the key value if it contains "Key:"
+                    if "Key:" in line:
+                        key = line.split("Key:")[1].strip()
+                        keys.append(key)
+                    else:
+                        keys.append(line)
         logging.info(f"Read {len(keys)} keys from {filename}")
         return keys
     except Exception as e:
