@@ -42,25 +42,22 @@ def read_keys_from_file(filename):
 
 
 def main():
-    # Читаем ключи из файла
     keys = read_keys_from_file("input.txt")
     if not keys:
         return
 
-    # Открываем файл для записи результатов
     with open('results.txt', 'w', encoding='utf-8') as f:
         for key in keys:
             logging.info(f"Making API request for key: {key}")
             response = make_api_request(key)
             
             try:
-                # Парсим JSON ответ
-                response_data = json.loads(response)
-                # Записываем email:password
-                if '|' in str(response_data):
-                    email, password = response_data.split('|')
+                # Убираем парсинг JSON, так как ответ - это просто текст
+                if '|' in response:
+                    email, password = response.strip().split('|')
                     f.write(f"{email}:{password}\n")
-            except:
+            except Exception as e:
+                print(f"Error processing response: {e}")
                 continue
 
             time.sleep(0.1)
