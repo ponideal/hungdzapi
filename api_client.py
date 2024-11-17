@@ -5,7 +5,7 @@ import logging
 import os
 import time
 
-BASE_URL = "https://api.example.com/endpoint"
+BASE_URL = "http://sv5.api999.com/google/api.php"
 
 def make_api_request(key):
     """Делаем запрос к API"""
